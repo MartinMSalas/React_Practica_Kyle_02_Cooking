@@ -8,98 +8,101 @@ import { v4 as uuidv4 } from 'uuid' 
 */
 import { v4 as uuidv4 } from 'uuid' 
 
-export const RecipeContext = React.createContext();
-const LOCAL_STORAGE_KEY = "cookingWithReact.recipes"
 
+
+export const RecipeContext = React.createContext()
+const LOCAL_STORAGE_KEY = 'cookingWithReact.recipes'
 
 function App() {
-  const [recipes, setRecipes] = useState(sampleRecipes);
-
-
-  
-  
-  useEffect(() => {
+  const [recipes, setRecipes] = useState(()=>{
     const recipeJSON = localStorage.getItem(LOCAL_STORAGE_KEY)
-    if (recipeJSON != null) setRecipes(JSON.parse(recipeJSON))
-  }, [])
+    console.log("Chequeo si tengo cargadas recetas ",JSON.parse(recipeJSON).length)
+    if (recipeJSON === null || JSON.parse(recipeJSON).length === 0){
+      console.log("aCA deberia recargar el array")
+      return sampleRecipes
+    } else {
+      return (JSON.parse(recipeJSON))
+    }
+  })
+
+
+  /*
   
+  */
   useEffect(() => {
     localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(recipes))
   }, [recipes])
 
   const recipeContextValue = {
     handleRecipeAdd,
-    handleRecipeDelete,
+    handleRecipeDelete
   }
-  function handleRecipeAdd(){
+
+  function handleRecipeAdd() {
     const newRecipe = {
       id: uuidv4(),
-      name: "New",
+      name: 'New',
       servings: 1,
-      cookTime: "1:00",
-      instructions: "Instructions",
-      ingredients: [ {
-        id: uuidv4(), name: "Name", amount: "1 Tbs"
-      }]
+      cookTime: '1:00',
+      instructions: 'Instr.',
+      ingredients: [
+        { id: uuidv4(), name: 'Name', amount: '1 Tbs' }
+      ]
     }
-    // leemos todas las recetas de recipes, creamos una nueva y la agregamos y llamamos a setRecipes
-    setRecipes((preRecipe)=>[...recipes, newRecipe]);
+
+    setRecipes([...recipes, newRecipe])
   }
-  function handleRecipeDelete(id){
-    setRecipes(recipes.filter(recipe => recipe.id !== id));
+
+  function handleRecipeDelete(id) {
+    setRecipes(recipes.filter(recipe => recipe.id !== id))
   }
+
   return (
-
-    <>
-      {console.log("render APP")}
-      <RecipeContext.Provider value={recipeContextValue}>
-
-        <RecipeList recipes={recipes} ></RecipeList>
-      </RecipeContext.Provider>
-    </>
-  );
+    <RecipeContext.Provider value={recipeContextValue}>
+      <RecipeList recipes={recipes} />
+    </RecipeContext.Provider>
+  )
 }
+
 const sampleRecipes = [
   {
     id: 1,
-    name: "Plain Chicken",
+    name: 'Plain Chicken',
     servings: 3,
-    cookTime: "1:45",
-    instructions:
-      "1. Put salt on Chicken\n2. Put Chicken in oven\n3. Eat the chicken",
+    cookTime: '1:45',
+    instructions: "1. Put salt on chicken\n2. Put chicken in oven\n3. Eat chicken",
     ingredients: [
       {
         id: 1,
-        name: "Chicken",
-        amount: "2 kilos",
+        name: 'Chicken',
+        amount: '2 Pounds'
       },
       {
         id: 2,
-        name: "Salt",
-        amount: "1 tbs",
-      },
-    ],
+        name: 'Salt',
+        amount: '1 Tbs'
+      }
+    ]
   },
   {
     id: 2,
-    name: "Plain Pork",
+    name: 'Plain Pork',
     servings: 5,
-    cookTime: "0:45",
-    instructions:
-      "1. Put paprika on Pork\n2. Put Pork in oven\n3. Eat the Pork",
+    cookTime: '0:45',
+    instructions: "1. Put paprika on pork\n2. Put pork in oven\n3. Eat pork",
     ingredients: [
       {
         id: 1,
-        name: "Chicken",
-        amount: "3 pounds",
+        name: 'Pork',
+        amount: '3 Pounds'
       },
       {
         id: 2,
-        name: "Paprika",
-        amount: "2 tbs",
-      },
-    ],
-  },
-];
+        name: 'Paprika',
+        amount: '2 Tbs'
+      }
+    ]
+  }
+]
 
 export default App;
