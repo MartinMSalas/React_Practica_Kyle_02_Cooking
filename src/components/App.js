@@ -7,6 +7,7 @@ despues importamos uuidv4
 import { v4 as uuidv4 } from 'uuid' 
 */
 import { v4 as uuidv4 } from 'uuid' 
+import RecipeEdit from "./RecipeEdit";
 
 
 
@@ -16,7 +17,7 @@ const LOCAL_STORAGE_KEY = 'cookingWithReact.recipes'
 function App() {
   const [recipes, setRecipes] = useState(()=>{
     const recipeJSON = localStorage.getItem(LOCAL_STORAGE_KEY)
-    console.log("Chequeo si tengo cargadas recetas ",JSON.parse(recipeJSON).length)
+    
     if (recipeJSON === null || JSON.parse(recipeJSON).length === 0){
       console.log("aCA deberia recargar el array")
       return sampleRecipes
@@ -60,6 +61,7 @@ function App() {
   return (
     <RecipeContext.Provider value={recipeContextValue}>
       <RecipeList recipes={recipes} />
+      <RecipeEdit></RecipeEdit>
     </RecipeContext.Provider>
   )
 }
