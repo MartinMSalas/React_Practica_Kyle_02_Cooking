@@ -1,9 +1,7 @@
 import React from "react";
-
-
 import RecipeIngredientEdit from "./RecipeIngredientEdit";
 
-export default function RecipeEdit() {
+export default function RecipeEdit({recipe}) {
   return (
     <div className="recipe-edit">
       <div className="recipe-edit__remove-button-container">
@@ -18,6 +16,7 @@ export default function RecipeEdit() {
           type="text" 
           name="name" 
           id="name" 
+          value={recipe.name}
           className="recipe-edit__input"></input>
         <label 
           htmlFor="cookTime" 
@@ -51,8 +50,15 @@ export default function RecipeEdit() {
         <div>Name</div>
         <div>Amount</div>
         <div></div>
-        <RecipeIngredientEdit></RecipeIngredientEdit>
-        <RecipeIngredientEdit></RecipeIngredientEdit>
+        {recipe.ingredients.map(ingredient => {
+          return(
+
+            <RecipeIngredientEdit
+              key={ingredient.id} ingredient={ingredient}></RecipeIngredientEdit>
+          )
+
+        })}
+        
         {/* Ingredients Components */}
       </div>
         <div className="recipe-edit__add-ingredient-btn-container">
