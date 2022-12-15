@@ -6,7 +6,7 @@ export default function RecipeList({ recipes }) {
   const { handleRecipeAdd} = useContext(RecipeContext)
   return (
     <>
-      {console.log("render Recipe List")}
+      
       <div className="recipe-list">
         <div>
           {recipes.map((recipe) => {
